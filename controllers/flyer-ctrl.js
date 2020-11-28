@@ -106,8 +106,10 @@ saveFlyerChanges = async (req, res) => {
 
     if (ObjectID(req.user._id).toHexString() !== body.editor) return status404(res, 'The flyer not belongs to the user.')
 
-    flyer.canvas = body.canvas
-    flyer.image = body.image
+    flyer.name = body.name ? body.name : flyer.name
+    flyer.description = body.description ? body.description : flyer.description
+    flyer.canvas = body.canvas ? body.canvas : flyer.canvas
+    flyer.image = body.image ? body.image : flyer.image
     flyer
       .save()
       .then(() => {
