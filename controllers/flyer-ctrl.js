@@ -72,7 +72,7 @@ getFlyers = async (req, res) => {
     if (!flyers.length) return status404(res, 'No flyer found.')
 
     // filter out the flyers belongs to the user
-    flyers = flyers.filter(flyer => flyer.editor === ObjectID(req.user._id).toHexString());
+    // flyers = flyers.filter(flyer => flyer.editor === ObjectID(req.user._id).toHexString());
 
     return res.status(200).json({ success: true, length: flyers.length, data: flyers })
   }).catch(err => console.log(err))
