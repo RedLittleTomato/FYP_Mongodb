@@ -10,7 +10,7 @@ const db = require('./config').get(process.env.NODE_ENV);
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '100kb' }))
 app.use(cookieParser())
 
 // Force https ==> not sure how to use
