@@ -165,8 +165,6 @@ deleteFlyer = async (req, res) => {
   await Flyer.findOneAndDelete({ _id: req.params.id }, (err, flyer) => {
     if (err) status400(res, err)
 
-    if (!flyer) return status404(res, 'Flyer not found.')
-
     return res.status(200).json({
       success: true,
       message: "Deleted",
