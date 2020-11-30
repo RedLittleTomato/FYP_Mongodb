@@ -9,7 +9,7 @@ router.post('/login', UserCtrl.login)
 router.post('/register', UserCtrl.register)
 router.get('/reset/:token', UserCtrl.resetValidation)
 router.put('/updatepassword', UserCtrl.updatePassword)
-router.post('/forgotpassword', UserCtrl.forgotPassword)
+router.put('/forgotpassword', UserCtrl.forgotPassword)
 
 // auth
 router.get('/checksavedflyer', auth, UserCtrl.checkSavedFlyer)
