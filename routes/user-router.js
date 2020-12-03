@@ -13,6 +13,7 @@ router.put('/forgotpassword', UserCtrl.forgotPassword)
 
 // auth
 router.get('/checksavedflyer', auth, UserCtrl.checkSavedFlyer)
+router.get('/savedflyerlist', auth, UserCtrl.getSavedFlyerList)
 router.put('/saveflyer', auth, UserCtrl.saveFlyer)
 router.get('/logout', auth, UserCtrl.logout)
 

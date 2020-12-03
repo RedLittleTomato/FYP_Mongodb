@@ -48,6 +48,7 @@ login = (req, res) => {
         res.json({
           isAuth: true,
           id: user._id,
+          type: user.type,
           token: user.token
         })
       })
@@ -94,7 +95,7 @@ forgotPassword = async (req, res) => {
       subject: 'E-Flyer Reset Password',
       text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-        `http://localhost:3000/reset-password?t=${token}` + '\n\n' +
+        `${process.env.WEBSITE_URL}reset-password?t=${token}` + '\n\n' +
         'If you did not request this, please ignore this email and your password will remain unchanged.\n'
     };
 
@@ -198,6 +199,14 @@ checkSavedFlyer = async (req, res) => {
   })
 }
 
+getSavedFlyerList = async (req, res) => {
+  await User.findOne({ _id: req.user._id }, (err, user) => {
+    if (err) return status404(res, 'User not found!')
+
+    return res.status(200).json({ success: true, data: user.saved })
+  })
+}
+
 updateUser = async (req, res) => {
   const body = req.body
 
@@ -295,6 +304,7 @@ module.exports = {
   updatePassword,
   saveFlyer,
   checkSavedFlyer,
+  getSavedFlyerList,
   updateUser,
   deleteUser,
   getUsers,

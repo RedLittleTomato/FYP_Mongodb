@@ -53,7 +53,6 @@ getTemplateFlyers = async (req, res) => {
 }
 
 getPreviewFlyer = async (req, res) => {
-
   await Flyer.findOne({ _id: req.params.id }, (err, flyer) => {
     if (err) return status400(res, err)
 
@@ -64,6 +63,17 @@ getPreviewFlyer = async (req, res) => {
     return res.status(200).json({ success: true, data: flyer })
   }).catch(err => console.log(err))
 }
+
+getLatestFlyers = async (req, res) => {
+  await Flyer.find({ public: true }).sort({ createdAt: -1 }).exec((err, flyers) => {
+    if (err) return status400(res, err)
+
+    if (!flyers) return status404(res, 'No flyer.')
+
+    return res.status(200).json({ success: true, data: flyers })
+  })
+}
+
 
 getFlyers = async (req, res) => {
   await Flyer.find({}, (err, flyers) => {
@@ -106,10 +116,8 @@ saveFlyerChanges = async (req, res) => {
 
     if (ObjectID(req.user._id).toHexString() !== body.editor) return status404(res, 'The flyer not belongs to the user.')
 
-    flyer.name = body.name ? body.name : flyer.name
-    flyer.description = body.description ? body.description : flyer.description
-    flyer.canvas = body.canvas ? body.canvas : flyer.canvas
-    flyer.image = body.image ? body.image : flyer.image
+    flyer.canvas = body.canvas
+    flyer.image = body.image
     flyer
       .save()
       .then(() => {
@@ -122,6 +130,37 @@ saveFlyerChanges = async (req, res) => {
         return res.status(404).json({
           error,
           message: 'Flyer not updated!',
+        })
+      })
+  })
+}
+
+saveFlyerDetailsChanges = async (req, res) => {
+  const body = req.body
+
+  if (!body) return status400(res, 'You must provide the latest flyer to update.')
+
+  await Flyer.findOne({ _id: body.id }, (err, flyer) => {
+    if (err) return status404(res, 'Flyer not found!')
+
+    if (ObjectID(req.user._id).toHexString() !== body.editor) return status404(res, 'The flyer not belongs to the user.')
+
+    flyer.public = body.public
+    flyer.template = body.template
+    flyer.name = body.name
+    flyer.description = body.description
+    flyer
+      .save()
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          message: 'Flyer details updated!',
+        })
+      })
+      .catch(error => {
+        return res.status(404).json({
+          error,
+          message: 'Flyer details not updated!',
         })
       })
   })
@@ -177,9 +216,11 @@ module.exports = {
   getSavedFlyers,
   getTemplateFlyers,
   getPreviewFlyer,
+  getLatestFlyers,
   getFlyers,
   createNewFlyer,
   saveFlyerChanges,
+  saveFlyerDetailsChanges,
   likeFlyer,
   deleteFlyer
 }
