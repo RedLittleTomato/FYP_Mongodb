@@ -68,7 +68,7 @@ forgotPassword = async (req, res) => {
   await User.findOne({ email: userEmail }, (error, user) => {
     if (error) return status400(res, error)
 
-    if (!user) return status404(res, `The email does registered with us before.`)
+    if (!user) return status404(res, `The email does not register with us before.`)
 
     const randomNumber = Math.random().toString().slice(2, 22);
     const token = jwt.sign(randomNumber, process.env.SECRET_KEY);
@@ -92,7 +92,7 @@ forgotPassword = async (req, res) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL_ADDRESS,
       to: userEmail,
-      subject: 'E-Flyer Reset Password',
+      subject: 'Flyer Garden - Reset Password',
       text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
         `${process.env.WEBSITE_URL}reset-password?t=${token}` + '\n\n' +

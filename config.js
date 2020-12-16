@@ -6,7 +6,8 @@ const config = {
   default: {
     SECRET: 'mysecretkey',
     // DATABASE: 'mongodb://localhost:27017/fyp_project' // ==> local
-    DATABASE: 'mongodb+srv://dbUser:dbUser@cluster.disne.mongodb.net/dbUser?retryWrites=true&w=majority' // ==> cloud (altis)
+    DATABASE: 'mongodb+srv://dbUser:dbUser@cluster.disne.mongodb.net/dbUser?retryWrites=true&w=majority', // ==> cloud (altis) - singapore
+    // DATABASE: 'mongodb+srv://dbUser:dbUser@cluster.7qiyo.mongodb.net/dbUser?retryWrites=true&w=majority'// ==> cloud (altis) - us, virginia
   }
 }
 
